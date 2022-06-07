@@ -557,3 +557,245 @@ ListView {
     }
 }
 ```
+
+---
+layout: two-cols
+---
+
+# Avoid Unnecessary Binding Evaluations
+
+```qml
+import QtQuick 2.3
+
+Item {
+    id: root
+
+    property int accumulatedValue: 0
+
+    Component.onCompleted: {
+        const someData = [1, 2, 3, 4, 5, 20]
+        for (let i = 0; i < someData.length; ++i) {
+            accumulatedValue = accumulatedValue + someData[i]
+        }
+    }
+
+    Text {
+        text: root.accumulatedValue.toString()
+        onTextChanged: console.log("text binding re-evaluated")
+    }
+}
+```
+
+::right::
+
+# Avoid Unnecessary Binding Evaluations
+
+```qml
+import QtQuick 2.3
+
+Item {
+    id: root
+
+    property int accumulatedValue: 0
+
+    Component.onCompleted: {
+        const someData = [1, 2, 3, 4, 5, 20]
+        let temp = accumulatedValue
+        for (let i = 0; i < someData.length; ++i) {
+            temp = temp + someData[i]
+        }
+
+        accumulatedValue = temp
+    }
+
+    Text {
+        text: root.accumulatedValue.toString()
+        onTextChanged: console.log("text binding re-evaluated")
+    }
+}
+```
+
+---
+layout: section
+---
+
+# C++ Integration
+
+<!--
+Ask the audience: How many different ways do you think we can expose a C++ object to QML?
+1- Context properties [Deprecated]
+2- Global object
+3- Singletons
+4- Instantiated object
+-->
+
+---
+
+# Context Properties Are Deprecated
+
+Don't use them.
+
+[QTBUG-73064](https://bugreports.qt.io/browse/QTBUG-73064)
+
+---
+
+# Singletons for API Access
+
+```cpp
+qmlRegisterSingletonType<MySingletonClass>("MyNameSpace", 1, 0, "MySingletonClass",
+                                           MySingletonClass::singletonProvider);
+```
+
+```qml
+Window {
+    onClosing: (event) => {
+        event.accepted = MySingletonClass.confirmExit()
+    }
+}
+```
+
+Singletons are good for themes as well.
+
+```qml
+Button {
+    background: Rectangle {
+        color: Theme.buttonBackground
+    }
+}
+```
+
+<!---
+If you can't fit these functionality into an instantiated class, then singletons are a good place
+to put together some common functions. Normally, I would prefer instantiated types for data, but
+for themes singletons are good.
+-->
+
+---
+
+# Singletons for API Access (Continued)
+
+- If you use singleton for data, don't use it inside a component.
+
+```qml
+// Contacts.qml
+Item {
+    id: root
+
+    ListView {
+        model: MySingletonClass.contacts
+        delegate: Text { /* ... */ }
+    }
+}
+```
+
+```qml
+// Contacts.qml
+Item {
+    id: root
+
+    property alias model: lv.model
+
+    ListView {
+        id: lv
+        delegate: Text { /* ... */ }
+    }
+}
+```
+
+<!--
+The more you reduce the dependency that a component has, the better. It makes your components more
+flexible and easy to use.
+-->
+
+---
+
+# Prefer Instantiated Types Over Singletons For Data
+
+```cpp
+qmlRegisterType<ColorModel>("MyNameSpace", 1, 0, "ColorModel");
+```
+
+```qml
+// ColorsWindow.qml
+Window {
+    id: root
+
+    Column {
+        Repeater {
+            model: Palette.selectedColors
+            delegate: ColorViewer {
+                required property color color
+                required property string colorName
+
+                selectedColor: color
+                selectedColorName: colorName
+            }
+        }
+    }
+}
+```
+
+<!--
+The goal is to increase flexibility and re-usability.
+-->
+
+---
+
+# Prefer Instantiated Types Over Singletons For Data
+
+```qml
+// ColorsWindow.qml
+Window {
+    id: root
+
+    property alias model: rp.model
+
+    Column {
+        Repeater {
+            id: rp
+            // Alternatively
+            model: PaletteColorsModel { }
+            delegate: ColorViewer {
+                required property color color
+                required property string colorName
+
+                selectedColor: color
+                selectedColorName: colorName
+            }
+        }
+    }
+}
+```
+
+See [#2](https://github.com/Furkanzmc/QML-Coding-Guide/issues/9) for related discussions.
+
+<!--
+The reason I like this approach is it allows for maximum reusablity of this component. I can use
+PaletteColorsModel as a customization point internally by exposing properties. I can easily change
+data based on the type of colors I want to show.
+-->
+
+---
+
+# Watch Out for Object Ownership Rules
+
+Two ownership types:
+
+- C++
+- QML
+
+```cpp
+Q_PROPERTY( QObject* colors READ colors )
+
+QObject* colors(); // Ownership remains in C++.
+Q_INVOKABLE QObject* myData(); // Ownership is transferred to QML.
+```
+
+See [this article](https://embeddeduse.com/2018/04/02/qml-engine-deletes-c-objects-still-in-use/)
+for a real life example of a related bug in an application.
+
+<!--
+Honestly, if you worry about this then you may be doing something wrong. Keep things simple when it
+comes to memory management, and the best way to do that is to just stick to instantiated types and
+avoid calling any `get` functions from the QML side.
+-->
