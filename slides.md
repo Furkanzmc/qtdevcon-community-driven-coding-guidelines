@@ -1,383 +1,559 @@
 ---
 # try also 'default' to start simple
 theme: seriph
-# random image from a curated Unsplash collection by Anthony
-# like them? see https://unsplash.com/collections/94734566/slidev
-background: https://source.unsplash.com/collection/94734566/1920x1080
 # apply any windi css classes to the current slide
 class: 'text-center'
 # https://sli.dev/custom/highlighters.html
-highlighter: shiki
+highlighter: prism
 # show line numbers in code blocks
 lineNumbers: false
-# some information about the slides, markdown enabled
-info: |
-  ## Slidev Starter Template
-  Presentation slides for developers.
-
-  Learn more at [Sli.dev](https://sli.dev)
 # persist drawings in exports and build
 drawings:
   persist: false
+themeConfig:
+  primary: '#485a62'
+background: https://unsplash.com/photos/cAtzHUz7Z8g/download?ixid=MnwxMjA3fDB8MXxzZWFyY2h8MTB8fGNvbW11bml0eSUyMHdvcmt8ZW58MHx8fHwxNjU0NDY3MTQ3&force=true&w=2400
 ---
 
-# Welcome to Slidev
+<style>
+.slidev-code {
+    height: 90%;
+    overflow-y: scroll;
+}
+</style>
 
-Presentation slides for developers
+# Community Driven Coding Guidelines for QML
 
-<div class="pt-12">
-  <span @click="$slidev.nav.next" class="px-2 py-1 rounded cursor-pointer" hover="bg-white bg-opacity-10">
-    Press Space for next page <carbon:arrow-right class="inline"/>
-  </span>
-</div>
-
-<div class="abs-br m-6 flex gap-2">
-  <button @click="$slidev.nav.openInEditor()" title="Open in Editor" class="text-xl icon-btn opacity-50 !border-none !hover:text-white">
-    <carbon:edit />
-  </button>
-  <a href="https://github.com/slidevjs/slidev" target="_blank" alt="GitHub"
-    class="text-xl icon-btn opacity-50 !border-none !hover:text-white">
-    <carbon-logo-github />
-  </a>
-</div>
+Living and breathing document with the communitye
 
 <!--
-The last comment block of each slide will be treated as slide notes. It will be visible and editable in Presenter Mode along with the slide. [Read more in the docs](https://sli.dev/guide/syntax.html#notes)
+- Started using QML on mobile and desktop for a startup.
+- Alone developer.
+- Started writing down the things I learned.
+- Turned into its current state.
+- Now working at Autodesk at a massive project to rewrite the UI of one of our products completely
+  in QML. Working with designers.
+- Updated as we go along.
 -->
 
 ---
 
-# What is Slidev?
+# Furkan Uzumcu
 
-Slidev is a slides maker and presenter designed for developers, consist of the following features
-
-- 📝 **Text-based** - focus on the content with Markdown, and then style them later
-- 🎨 **Themable** - theme can be shared and used with npm packages
-- 🧑‍💻 **Developer Friendly** - code highlighting, live coding with autocompletion
-- 🤹 **Interactive** - embedding Vue components to enhance your expressions
-- 🎥 **Recording** - built-in recording and camera view
-- 📤 **Portable** - export into PDF, PNGs, or even a hostable SPA
-- 🛠 **Hackable** - anything possible on a webpage
-
-<br>
-<br>
-
-Read more about [Why Slidev?](https://sli.dev/guide/why)
+- Started using QML in 2017
+- ❤️ Open Source
+- ❤️ [Split] Mechanical Keyboards
+- Working at Autodesk
+- Furkanzmc @ GitHub
+- Furkanzmc @ Twitter
+- Website: https://zmc.space
 
 <!--
-You can have `style` tag in markdown to override the style for the current page.
-Learn more: https://sli.dev/guide/syntax#embedded-styles
+- Worked on mobile and desktop applications with QML
+- I build my own keyboards
+- I love UI work and working with designers
+- Please interrupt and ask questions
 -->
 
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
-}
-</style>
-
+---
+layout: image-left
+image: https://unsplash.com/photos/ioYwosPYC0U/download?force=true&w=640
 ---
 
-# Navigation
-
-Hover on the bottom-left corner to see the navigation's controls panel, [learn more](https://sli.dev/guide/navigation.html)
-
-### Keyboard Shortcuts
-
-|     |     |
-| --- | --- |
-| <kbd>right</kbd> / <kbd>space</kbd>| next animation or slide |
-| <kbd>left</kbd>  / <kbd>shift</kbd><kbd>space</kbd> | previous animation or slide |
-| <kbd>up</kbd> | previous slide |
-| <kbd>down</kbd> | next slide |
-
-<!-- https://sli.dev/guide/animations.html#click-animations -->
-<img
-  v-click
-  class="absolute -bottom-9 -left-7 w-80 opacity-50"
-  src="https://sli.dev/assets/arrow-bottom-left.svg"
-/>
-<p v-after class="absolute bottom-23 left-45 opacity-30 transform -rotate-10">Here!</p>
-
----
-layout: image-right
-image: https://source.unsplash.com/collection/94734566/1920x1080
----
-
-# Code
-
-Use code snippets and get the highlighting directly![^1]
-
-```ts {all|2|1-6|9|all}
-interface User {
-  id: number
-  firstName: string
-  lastName: string
-  role: string
-}
-
-function updateUser(id: number, update: User) {
-  const user = getUser(id)
-  const newUser = { ...user, ...update }
-  saveUser(id, newUser)
-}
-```
-
-<arrow v-click="3" x1="400" y1="420" x2="230" y2="330" color="#564" width="3" arrowSize="1" />
-
-[^1]: [Learn More](https://sli.dev/guide/syntax.html#line-highlighting)
-
-<style>
-.footnotes-sep {
-  @apply mt-20 opacity-10;
-}
-.footnotes {
-  @apply text-sm opacity-75;
-}
-.footnote-backref {
-  display: none;
-}
-</style>
-
----
-
-# Components
-
-<div grid="~ cols-2 gap-4">
-<div>
-
-You can use Vue components directly inside your slides.
-
-We have provided a few built-in components like `<Tweet/>` and `<Youtube/>` that you can use directly. And adding your custom components is also super easy.
-
-```html
-<Counter :count="10" />
-```
-
-<!-- ./components/Counter.vue -->
-<Counter :count="10" m="t-4" />
-
-Check out [the guides](https://sli.dev/builtin/components.html) for more.
-
-</div>
-<div>
-
-```html
-<Tweet id="1390115482657726468" />
-```
-
-<Tweet id="1390115482657726468" scale="0.65" />
-
-</div>
-</div>
-
-
----
-class: px-20
----
-
-# Themes
-
-Slidev comes with powerful theming support. Themes can provide styles, layouts, components, or even configurations for tools. Switching between themes by just **one edit** in your frontmatter:
-
-<div grid="~ cols-2 gap-2" m="-t-2">
-
-```yaml
----
-theme: default
----
-```
-
-```yaml
----
-theme: seriph
----
-```
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-default/01.png?raw=true">
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-seriph/01.png?raw=true">
-
-</div>
-
-Read more about [How to use a theme](https://sli.dev/themes/use.html) and
-check out the [Awesome Themes Gallery](https://sli.dev/themes/gallery.html).
-
----
-preload: false
----
-
-# Animations
-
-Animations are powered by [@vueuse/motion](https://motion.vueuse.org/).
-
-```html
-<div
-  v-motion
-  :initial="{ x: -80 }"
-  :enter="{ x: 0 }">
-  Slidev
-</div>
-```
-
-<div class="w-60 relative mt-6">
-  <div class="relative w-40 h-40">
-    <img
-      v-motion
-      :initial="{ x: 800, y: -100, scale: 1.5, rotate: -50 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-square.png"
-    />
-    <img
-      v-motion
-      :initial="{ y: 500, x: -100, scale: 2 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-circle.png"
-    />
-    <img
-      v-motion
-      :initial="{ x: 600, y: 400, scale: 2, rotate: 100 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-triangle.png"
-    />
-  </div>
-
-  <div
-    class="text-5xl absolute top-14 left-40 text-[#2B90B6] -z-1"
-    v-motion
-    :initial="{ x: -80, opacity: 0}"
-    :enter="{ x: 0, opacity: 1, transition: { delay: 2000, duration: 1000 } }">
-    Slidev
-  </div>
-</div>
-
-<!-- vue script setup scripts can be directly used in markdown, and will only affects current page -->
-<script setup lang="ts">
-const final = {
-  x: 0,
-  y: 0,
-  rotate: 0,
-  scale: 1,
-  transition: {
-    type: 'spring',
-    damping: 10,
-    stiffness: 20,
-    mass: 2
-  }
-}
-</script>
-
-<div
-  v-motion
-  :initial="{ x:35, y: 40, opacity: 0}"
-  :enter="{ y: 0, opacity: 1, transition: { delay: 3500 } }">
-
-[Learn More](https://sli.dev/guide/animations.html#motion)
-
-</div>
-
----
-
-# LaTeX
-
-LaTeX is supported out-of-box powered by [KaTeX](https://katex.org/).
-
-<br>
-
-Inline $\sqrt{3x-1}+(1+x)^2$
-
-Block
-$$
-\begin{array}{c}
-
-\nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} &
-= \frac{4\pi}{c}\vec{\mathbf{j}}    \nabla \cdot \vec{\mathbf{E}} & = 4 \pi \rho \\
-
-\nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\
-
-\nabla \cdot \vec{\mathbf{B}} & = 0
-
-\end{array}
-$$
-
-<br>
-
-[Learn more](https://sli.dev/guide/syntax#latex)
-
----
-
-# Diagrams
-
-You can create diagrams / graphs from textual descriptions, directly in your Markdown.
-
-<div class="grid grid-cols-3 gap-10 pt-4 -mb-6">
-
-```mermaid {scale: 0.5}
-sequenceDiagram
-    Alice->John: Hello John, how are you?
-    Note over Alice,John: A typical interaction
-```
-
-```mermaid {theme: 'neutral', scale: 0.8}
-graph TD
-B[Text] --> C{Decision}
-C -->|One| D[Result 1]
-C -->|Two| E[Result 2]
-```
-
-```plantuml {scale: 0.7}
-@startuml
-
-package "Some Group" {
-  HTTP - [First Component]
-  [Another Component]
-}
-
-node "Other Groups" {
-  FTP - [Second Component]
-  [First Component] --> FTP
-}
-
-cloud {
-  [Example 1]
-}
-
-
-database "MySql" {
-  folder "This is my folder" {
-    [Folder 3]
-  }
-  frame "Foo" {
-    [Frame 4]
-  }
-}
-
-
-[Another Component] --> [Example 1]
-[Example 1] --> [Folder 3]
-[Folder 3] --> [Frame 4]
-
-@enduml
-```
-
-</div>
-
-[Learn More](https://sli.dev/guide/syntax.html#diagrams)
-
+# Why have guidelines?
+
+- Different use cases for QML in vastly different industries
+- Sane defaults for new comers to the language[^1]
+- Great existing content but scattered and unstructured[^2]
+- Base for tooling
+
+[^1]: [Official Best Practices for QML and Qt Quick from Qt](https://doc.qt.io/qt-6/qtquick-bestpractices.html)
+[^2]: [QML Best Practices Search](https://www.google.com/search?hl=en&q=qml+best+practices)
+
+<!--
+- Started out with me writing down what I learn and solutions to my mistakes.
+- No need to convince anyone of this.
+- Qt's documentation already has great content.
+- QML has very many different use cases in different industries. No known source of good community
+  knowledge repository.
+- Knowledge gathered from varies disciplines can help others.
+- If you search for QML best practices, you'll come across many great talks and some blog posts.
+  But they are scattered, information is duplicated.
+-->
 
 ---
 layout: center
-class: text-center
 ---
 
-# Learn More
+# Guidelines are NOT...
 
-[Documentations](https://sli.dev) · [GitHub](https://github.com/slidevjs/slidev) · [Showcases](https://sli.dev/showcases.html)
+- Unchangeable
+- The absolute truth
+- Be all end all
+
+<!--
+- Guidelines change as new experience is gained.
+- Whenever it makes sense, you can bypass them.
+- No need to wage war with your colleagues over it. Discuss and adjust.
+-->
+
+---
+
+# Guidelines are for...
+
+- Making code easier to:
+    + read
+    + understand
+    + maintain
+- Making it easier to detect errors or pitfalls
+- Making it easier to extract conventions for new comers.
+
+<!--
+It's all about making things easier for people to read, write and understand code.
+-->
+
+---
+layout: image-right
+image: https://unsplash.com/photos/NL_DF0Klepc/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjU0NDYyNzI0&force=true&w=640
+---
+
+# Better Tooling
+
+- Better diagnostics
+- Early error detection
+- Enforcing best practices and deprecation warnings
+- Better integration into development cycle (e.g git hooks, CI)
+- Customization
+
+<!--
+- Qt Creator provides good interface to some of the tools. But it forces one to use Qt Creator.
+  Most of our developers don't.
+- It's not immediately clear for people, especially beginners, where the error is and why it's
+  there.
+- Written guidelines are great, but it's not viable to expect a developer to check the guidelines
+  every time.
+- We adopted a coding style for QML that's incompatible with qmlformat, it's not feasible for us to
+  change now.
+-->
+
+---
+
+# Related Work
+
+- [QTBUG-68406](https://bugreports.qt.io/browse/QTBUG-68406): Create Language Server for QML
+- [QTBUG-74839](https://bugreports.qt.io/browse/QTBUG-74839): Implement QML code model in Qt
+- [QTBUG-74840](https://bugreports.qt.io/browse/QTBUG-74840): Implement QmlDom in Qt
+- [QTBUG-73675](https://bugreports.qt.io/browse/QTBUG-73675): Streamline QML for better toolability and performance
+- [QML: Tooling](https://bugreports.qt.io/browse/QTBUG-101531?jql=project%20%3D%20QTBUG%20AND%20component%20%3D%20%22QML%3A%20Tooling%22)
+
+---
+
+# How to Read QML Code
+
+```qml {all|1-2|4-6|6-7|8-10|11-18|20-22|all}
+Item {
+    id: root
+
+    property int radius
+    property color borderColor
+
+    signal clicked(MouseEvent mouse)
+
+    implicitWidth: 50
+    implicitHeight: 50
+
+    Rectangle {
+        width: parent.width / 2
+        height: height
+        radius: root.radius
+        border.width: 1
+        border.color: root.borderColor
+    }
+
+    MouseArea {
+        // If mouse click is inside the circle, emits root.clicked(mouse)
+    }
+}
+```
+
+<!--
+The goal is to gather as much background information as possible before you jump into the
+implementation details of a component.
+
+When you see the top level type, you already gain some insight. You know what kind of properties
+and signals that the type has if it's a built-in type. If it's not, then you just need to jump to
+the file, take a quick glance at the top and understand the basics of it.
+
+Then we get to the part that customizes this component further with additional properties and
+signals. Now I have a better understanding of the interactions that this component has.
+
+Then comes the visual children that might depend on the properties we declared above or the
+inherited properties.
+-->
+
+---
+layout: section
+---
+
+# [Code Style](https://github.com/Furkanzmc/QML-Coding-Guide#code-style)
+
+---
+
+# Code Order
+
+- id
+- Property declarations
+- Signal declarations
+- Property initializations
+- Attached properties and signal handlers
+- States
+- Transitions
+- Signal handlers
+- Child objects
+  + Visual Items
+  + Qt provided non-visual items
+  + Custom non-visual items
+- `QtObject` for encapsulating private members[[1]](https://bugreports.qt.io/browse/QTBUG-11984)
+- JavaScript functions
+
+<!--
+- Each title will have a link to the associated section on GitHub.
+
+QML is a visual language. When you look at a code, it should be easy to imagine what it would look
+like at runtime. This is not for replacing hot reloading, but making editing and understanding
+easier.
+-->
+
+---
+layout: two-cols
+---
+
+# Bad - ID, Properties, and Signals
+
+```qml
+// CustomMouseArea.qml
+MouseArea {
+    Component.onCompleted: { }
+    onTripleClicked: { }
+    onClicked: { }
+    pressAndHoldInterval: 20
+
+    signal tripleClicked()
+    property point pressedPosition
+
+    id: root
+}
+```
+
+::right::
+
+# Good - ID, Properties, and Signals
+
+```qml
+// CustomMouseArea.qml
+MouseArea {
+    id: root
+
+    property point pressedPosition
+    signal tripleClicked()
+
+    pressAndHoldInterval: 20
+    onClicked: { }
+    onTripleClicked: { }
+    Component.onCompleted: { }
+    Component.onDestruction: { }
+}
+```
+
+<!--
+When you look at the code, it should be easy to get a big picture idea of the properties and
+signals this document provides so the code you read down below makes more sense.
+-->
+
+---
+layout: two-cols
+---
+
+# Bad - ID, Properties, and Signals
+
+```qml
+Item {
+    Item {
+        anchors.left: parent.left
+        z: 32
+        x: 23
+        y: 32
+        implicitWidth: 300
+        width: 300
+        id: root
+    }
+}
+```
+
+::right::
+
+# Good - ID, Properties, and Signals
+
+```qml
+Item {
+    Item {
+        id: root
+        x: 23
+        y: 32
+        z: 32
+        implicitWidth: 300
+        width: 300
+        anchors.left: parent.left
+    }
+}
+```
+
+<!--
+Note that we wouldn't be setting anchors and explicit size and position here if this is meant to be
+a component.
+-->
+
+---
+layout: two-cols
+---
+
+# Bad - Function Ordering
+
+```qml
+Item {
+    id: root
+
+    function someFunction() { }
+
+    someProperty: true
+}
+```
+
+::right::
+
+# Good - Function Ordering
+
+```qml
+Item {
+    id: root
+    someProperty: true
+
+    // Function are declared at the bottom of the document.
+    function someFunction() { }
+}
+```
+
+<!--
+The reason that functions are at the bottom is first you should not be adding functions to your
+components, and second in case the functions end up getting larger they hurt readability.
+-->
+
+---
+layout: two-cols
+---
+
+# Bad - States and Transitions
+
+```qml
+RowLayout {
+
+    Item {
+        id: root
+        states: [ State { } ]
+        transitions: [ Transitions { } ]
+        width: 300
+        Layout.fillHeight: true
+        enabled: true
+        layer.enabled: false
+    }
+}
+```
+
+::right::
+
+# Good - States and Transitions
+
+```qml
+RowLayout {
+
+    Item {
+        id: root
+        width: 300
+        enabled: true
+        layer.enabled: false
+        Layout.fillHeight: true
+        states: [ State { } ]
+        transitions: [ Transitions { } ]
+    }
+}
+```
+
+<!--
+Easier to see what you are transitioning when the states are above the transitions.
+Easier to see what properties will be changing in the states if we can see the properties above.
+-->
+
+---
+
+# Full Example
+
+```qml
+// First Qt imports
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+// Then custom imports
+import my.library 1.0
+
+Item {
+    id: root
+
+    // ----- Property Declarations
+
+    // Required properties should be at the top.
+    required property int radius: 0
+
+    property int radius: 0
+    property color borderColor: "blue"
+
+    // ----- Signal declarations
+
+    signal clicked()
+    signal doubleClicked()
+
+    // ----- In this section, we group the size and position information together.
+
+    x: 0
+    y: 0
+    z: 0
+    width: 100
+    height: 100
+    anchors.top: parent.top // If a single assignment, dot notation can be used.
+    // If the item is an image, sourceSize is also set here.
+    // sourceSize: Qt.size(12, 12)
+
+    // ----- Then comes the other properties. There's no predefined order to these.
+
+    // Do not use empty lines to separate the assignments. Empty lines are reserved
+    // for separating type declarations.
+    enabled: true
+    layer.enabled: true
+
+    // ----- Then attached properties and attached signal handlers.
+
+    Layout.fillWidth: true
+    Drag.active: false
+    Drag.onActiveChanged: { }
+
+    // ----- States and transitions.
+
+    states: [ State { } ]
+    transitions: [ Transitions { } ]
+
+    // ----- Signal handlers
+
+    onWidthChanged: { } // Always use curly braces.
+    // onCompleted and onDestruction signal handlers are always the last in
+    // the order.
+    Component.onCompleted: { }
+    Component.onDestruction: { }
+
+    // ----- Visual children.
+
+    Rectangle {
+        height: 50
+        anchors: { // For multiple assignments, use group notation.
+            top: parent.top
+            left: parent.left
+            right: parent.right
+        }
+        color: "red"
+        layer.enabled: true
+    }
+
+    // ----- Qt provided non-visual children
+
+    Timer { }
+
+    // ----- Custom non-visual children
+
+    MyCustomNonVisualType { }
+
+    QtObject {
+        id: privates
+
+        property int diameter: 0
+    }
+
+    // ----- JavaScript functions
+
+    function collapse() { }
+
+    function setCollapsed(value: bool) { }
+}
+```
+
+---
+layout: section
+---
+
+# [Bindings](https://github.com/Furkanzmc/QML-Coding-Guide#bindings)
+
+Declarative > Imperative
+
+---
+layout: two-cols
+---
+
+# Imperative
+
+```qml
+ListView {
+    model: ContactModel { }
+    delegate: Label {
+        required property int index
+        required property string name
+
+        Component.onCompleted: {
+            text = index + ". " + name
+        }
+    }
+}
+```
+
+::right::
+
+# Declarative
+
+```qml
+ListView {
+    model: ContactModel { }
+    delegate: Label {
+        required property int index
+        required property string name
+
+        text: index + ". " + name
+    }
+}
+```
+
+---
+
+# Declarative 2
+
+**Is this still declarative?**
+
+```qml
+ListView {
+    model: ContactModel { }
+    delegate: Label {
+        required property int index
+        required property string name
+
+        text: getText()
+
+        function getText(): string {
+            return index + ". " + name
+        }
+    }
+}
+```
