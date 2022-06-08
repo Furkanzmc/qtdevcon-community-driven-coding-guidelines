@@ -114,7 +114,7 @@ It's all about making things easier for people to read, write and understand cod
 
 ---
 layout: image-right
-image: https://unsplash.com/photos/NL_DF0Klepc/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjU0NDYyNzI0&force=true&w=640
+image: https://unsplash.com/photos/NL_DF0Klepc/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjU0NDYyNzI0&force=true&w=1080
 ---
 
 # Better Tooling
@@ -189,6 +189,9 @@ signals. Now I have a better understanding of the interactions that this compone
 
 Then comes the visual children that might depend on the properties we declared above or the
 inherited properties.
+
+This helps us especially when we have designers working on the codebase. It makes it easier for
+them to read and understand code.
 -->
 
 ---
@@ -222,6 +225,9 @@ layout: section
 QML is a visual language. When you look at a code, it should be easy to imagine what it would look
 like at runtime. This is not for replacing hot reloading, but making editing and understanding
 easier.
+
+Discuss in your team, decide on a style and stick to it. We stuck to this, qmlformat does something
+completely different.
 -->
 
 ---
@@ -268,6 +274,8 @@ MouseArea {
 <!--
 When you look at the code, it should be easy to get a big picture idea of the properties and
 signals this document provides so the code you read down below makes more sense.
+
+Mitchell mentioned that Component is also an attached property so we should change this as well.
 -->
 
 ---
@@ -311,6 +319,8 @@ Item {
 <!--
 Note that we wouldn't be setting anchors and explicit size and position here if this is meant to be
 a component.
+Geometry information is often the thing that we change the most and it affects our understanding of
+the component.
 -->
 
 ---
@@ -346,6 +356,9 @@ Item {
 <!--
 The reason that functions are at the bottom is first you should not be adding functions to your
 components, and second in case the functions end up getting larger they hurt readability.
+
+In our code base, we have a way of creating function objects that call our C++ functions. We rarely
+add JS functions.
 -->
 
 ---
@@ -391,6 +404,8 @@ RowLayout {
 <!--
 Easier to see what you are transitioning when the states are above the transitions.
 Easier to see what properties will be changing in the states if we can see the properties above.
+As you read the code going down, you are already familiar with the properties that the states would
+be editing. Makes it easier to reason with code.
 -->
 
 ---
@@ -492,6 +507,13 @@ Item {
 }
 ```
 
+<!--
+It takes a while for people to get used to it, but it pays in the long run. We are at a stage where
+our designers have gotten so used to reading code in a structured way, when the code doesn't follow
+the guidelines they actually have trouble understanding the code. Declarative programming is fairly
+new to our team and it takes a while for people to ramp up.
+-->
+
 ---
 layout: section
 ---
@@ -558,6 +580,10 @@ ListView {
 }
 ```
 
+<!--
+QML is a declarative language, use it as such.
+-->
+
 ---
 layout: two-cols
 ---
@@ -615,6 +641,12 @@ Item {
 }
 ```
 
+<!--
+This also applies to emitting signals. Signals should be emitted when there is an actual change.
+We have had cases where we emit signals willy nilly and it resulted in performance problems and
+binding loops. Menu is a prime example. Or a `modified()` method call.
+-->
+
 ---
 layout: section
 ---
@@ -641,25 +673,16 @@ Don't use them.
 
 # Singletons for API Access
 
-```cpp
-qmlRegisterSingletonType<MySingletonClass>("MyNameSpace", 1, 0, "MySingletonClass",
-                                           MySingletonClass::singletonProvider);
-```
-
 ```qml
 Window {
     onClosing: (event) => {
         event.accepted = MySingletonClass.confirmExit()
     }
-}
-```
 
-Singletons are good for themes as well.
-
-```qml
-Button {
-    background: Rectangle {
-        color: Theme.buttonBackground
+    Button {
+        background: Rectangle {
+            color: Theme.buttonBackground
+        }
     }
 }
 ```
@@ -705,15 +728,15 @@ Item {
 <!--
 The more you reduce the dependency that a component has, the better. It makes your components more
 flexible and easy to use.
+
+Reasoning with global data is hard. When it's declared locally, it's less cognitive load on the
+reader. We have awQuick::Document, and it ends up being a bloated class with lots of members. Hard
+to understand, reason with. But we only ever access this in a single place.
 -->
 
 ---
 
 # Prefer Instantiated Types Over Singletons For Data
-
-```cpp
-qmlRegisterType<ColorModel>("MyNameSpace", 1, 0, "ColorModel");
-```
 
 ```qml
 // ColorsWindow.qml
@@ -743,18 +766,17 @@ The goal is to increase flexibility and re-usability.
 
 # Prefer Instantiated Types Over Singletons For Data
 
+See [Issue #2](https://github.com/Furkanzmc/QML-Coding-Guide/issues/9) for related discussions.
+
 ```qml
 // ColorsWindow.qml
 Window {
-    id: root
-
     property alias model: rp.model
 
     Column {
         Repeater {
             id: rp
-            // Alternatively
-            model: PaletteColorsModel { }
+            model: PaletteColorsModel { } // Alternatively
             delegate: ColorViewer {
                 required property color color
                 required property string colorName
@@ -766,8 +788,6 @@ Window {
     }
 }
 ```
-
-See [#2](https://github.com/Furkanzmc/QML-Coding-Guide/issues/9) for related discussions.
 
 <!--
 The reason I like this approach is it allows for maximum reusablity of this component. I can use
@@ -798,4 +818,235 @@ for a real life example of a related bug in an application.
 Honestly, if you worry about this then you may be doing something wrong. Keep things simple when it
 comes to memory management, and the best way to do that is to just stick to instantiated types and
 avoid calling any `get` functions from the QML side.
+
+awQuick::Menu is also another example for this. We were returning QObjects from methods, and it
+resulted in one of our editors crashing and it was hard to track down. So, do yourself a favor and
+don't call methods in QML. Rely on signals or property change signals.
+-->
+
+---
+layout: section
+---
+
+# Memory
+
+Profile first!
+Needs contributions.
+
+<!--
+Not in a memory constrained environment. So not a problem for us.
+I had one section about implicit types in the guideline but it is not that practical and will
+likely be removed. If you are working on a memory constrained environment, do contribute!
+-->
+
+---
+layout: section
+---
+
+# Signals
+
+<!--
+This was one of the most obvious mistakes we made. Signals are signals, functions are functions.
+They each have their own place. Don't confuse them.
+-->
+
+---
+
+# Avoid Using `.connect()` in QML
+
+```qml
+ApplicationWindow {
+    id: root
+
+    property list<QtObject> myObjects: [
+        QtObject { signal somethingHappened() }, QtObject { signal somethingHappened() },
+        QtObject { signal somethingHappened() }, QtObject { signal somethingHappened() },
+        QtObject { signal somethingHappened() }, QtObject { signal somethingHappened() },
+        QtObject { signal somethingHappened() }, QtObject { signal somethingHappened() }
+    ]
+
+    ListView {
+        cacheBuffer: 1 // Low enough we can resize the window to destroy buttons.
+        model: root.myObjects.length
+        delegate: Button {
+            text: "Button " + index
+            onClicked: root.myObjects[index].somethingHappened()
+            Component.onCompleted: root.myObjects[index].somethingHappened.connect(() => console.log(text))
+            Component.onDestruction: console.log("Destroyed #", index)
+        }
+    }
+}
+```
+
+---
+
+# Avoid Using `.connect()` in QML (Continued)
+
+```qml
+ApplicationWindow {
+    id: root
+
+    property list<QtObject> myObjects: [
+        // ... Same model as previous code snippet
+    ]
+
+    ListView {
+        cacheBuffer: 1 // Low enough we can resize the window to destroy buttons.
+        model: root.myObjects.length
+        delegate: Button {
+            id: dlg
+            text: "Button " + index
+            onClicked: root.myObjects[index].somethingHappened()
+            Component.onDestruction: console.log("Destroyed #", index)
+
+            Connections {
+                target: root.myObjects[index]
+
+                function onSomethingHappened() {
+                    console.log(dlg.text)
+                }
+            }
+        }
+    }
+}
+```
+
+<!--
+This is especially neferious in delegates. We have models that have millions and millions of
+objects inside. If these signals get duplicated somehow, or we run into similar issue here, then
+application can get stable and it may be hard to track.
+-->
+
+---
+
+# Functions vs Signals
+
+Function -> Changes Internal State
+> Imperative form -> doSomething()
+
+Signal -> Announces Internal State Change
+> Passive form -> somethingHappened()
+
+<!--
+Signals should be made private.
+-->
+
+---
+
+# What is wrong here?
+
+```qml
+// ColorPicker.qml
+Rectangle {
+    id: root
+
+    signal colorPicked(color pickedColor)
+
+    ColorDialog {
+        onColorChanged: {
+            root.colorPicked(color)
+        }
+    }
+}
+
+// main.qml
+Window {
+    ColorPicker {
+        onColorPicked: {
+            color = pickedColor
+            label.text = "Color Changed"
+        }
+    }
+    Label { id: label }
+}
+```
+
+<!--
+What is wrong with this code? These examples are trivial, but in a non-trivial application, the
+consequences of these might end up costing you.
+
+One problem we had in the beginning of our development was that signals were used as functions with
+many indirections. It made code very hard to follow and made it exceedingly dynamic.
+-->
+
+---
+layout: fact
+---
+
+Rule of thumb:
+
+    When communicating up, use signals.
+    When communicating down, use functions.
+
+<!--
+Since we are working with designers, we only use functions and signals in parts of the code that is
+meant primarily for developers.
+-->
+
+---
+
+# Use arrow function syntax for signal handlers
+
+```qml
+MouseArea {
+    // Good!
+    onClicked: (mouse) => {
+
+    }
+    // Bad...
+    onClicked: {
+
+    }
+}
+```
+
+---
+layout: image-right
+image: https://i.pinimg.com/originals/d9/eb/e2/d9ebe29636e1fac1e40b7a10da61bb7e.jpg
+---
+
+> ... our intellectual powers are rather geared to master static relations and that our powers to
+> visualize processes evolving in time are relatively poorly developed. - Edsger W. Dijkstra, Go To
+> Statement Considered Harmful
+
+<!--
+Profound statement. Signals makes your application more dynamic and you have to jump from one place
+to the other. Bindings are usually a better alternative to using signals. If you have to declare
+signals, first ask yourself if there is a way you can express this as a property. With a property,
+the relationship will be established and will be easier for you to reason with. With signals,
+anybody could abuse it and use it elsewhere.
+-->
+
+---
+layout: section
+---
+
+# JavaScript
+
+---
+
+```javascript
+// Arrow function
+root.value = Qt.binding(() => root.someOtherValue)
+// The old way.
+root.value = Qt.binding(function() { return root.someOtherValue })
+
+// Variables
+const value = 32;
+let valueTwo = 42;
+{
+    // Valid assignment since we are in a different scope.
+    const value = 32;
+    let valueTwo = 42;
+}
+const value = 32;
+value = 42; // ERROR!
+```
+
+<!--
+Ideally, you should have as little JavaScript as possible. This is in part JS is slow for heavy
+operations, but mostly to reduce friction for the readers of your code base. For newcomers, QML is
+already new and now they have to learn JS... They probably heard nothing but bad news about JS so
+no need to force it on them. Prefer C++ objects as singletons or as global object to add functions,
+e.g Qt or Aw object.
 -->
