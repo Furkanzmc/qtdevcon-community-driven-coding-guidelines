@@ -1,6 +1,8 @@
 ---
 # try also 'default' to start simple
 theme: seriph
+download: true
+number: true
 # apply any windi css classes to the current slide
 class: 'text-center'
 # https://sli.dev/custom/highlighters.html
@@ -24,9 +26,8 @@ background: https://unsplash.com/photos/cAtzHUz7Z8g/download?ixid=MnwxMjA3fDB8MX
 
 # Community Driven Coding Guidelines for QML
 
-Living and breathing document with the communitye
-
 <!--
+- Wrote the desktop client for EdBox.
 - Started using QML on mobile and desktop for a startup.
 - Alone developer.
 - Started writing down the things I learned.
@@ -54,6 +55,24 @@ Living and breathing document with the communitye
 - I love UI work and working with designers
 - Please interrupt and ask questions
 -->
+
+---
+
+<img src="/cuz.png" class="m-0 h-100 rounded shadow" style="float: left" />
+
+<img src="/kursbudur.png" class="m-0 h-100 rounded shadow" style="float: right" />
+
+---
+
+<img src="/mantar.png" class="m-0 h-100 rounded shadow" style="float: left; margin-left: 5em" />
+
+<img src="/ekinoks.gif" class="m-0 h-100 rounded shadow" style="float: right; margin-right: 6em" />
+
+---
+
+<img src="/edbox_1.png" class="m-0 h-100 rounded shadow" style="float: left" />
+
+<img src="/edbox_2.png" class="m-0 h-100 rounded shadow" style="float: right" />
 
 ---
 layout: image-left
@@ -145,6 +164,7 @@ image: https://unsplash.com/photos/NL_DF0Klepc/download?ixid=MnwxMjA3fDB8MXxhbGx
 - [QTBUG-74840](https://bugreports.qt.io/browse/QTBUG-74840): Implement QmlDom in Qt
 - [QTBUG-73675](https://bugreports.qt.io/browse/QTBUG-73675): Streamline QML for better toolability and performance
 - [QML: Tooling](https://bugreports.qt.io/browse/QTBUG-101531?jql=project%20%3D%20QTBUG%20AND%20component%20%3D%20%22QML%3A%20Tooling%22)
+- [QTBUG-69097](https://bugreports.qt.io/browse/QTBUG-69097)
 
 ---
 
@@ -1050,3 +1070,81 @@ already new and now they have to learn JS... They probably heard nothing but bad
 no need to force it on them. Prefer C++ objects as singletons or as global object to add functions,
 e.g Qt or Aw object.
 -->
+
+---
+layout: section
+---
+
+# States and Transitions
+
+---
+
+# Don't Define Top Level States
+
+```qml
+Item {
+    component Rect: Rectangle {
+        id: self
+
+        readonly property alias pressed: ma.containsPress
+
+        states: State {
+            when: ma.containsMouse
+
+            PropertyChanges { target: self; color: "red" }
+        }
+
+        MouseArea { id: ma; hoverEnabled: true }
+    }
+
+    Rect {
+        id: rect
+        states: State {
+            when: rect.pressed
+
+            PropertyChanges { target: rect; color: "yellow" }
+        }
+    }
+}
+```
+
+<!--
+QQmlListProperty does not reset but append to itself.
+-->
+
+---
+layout: section
+---
+
+# Visual Items
+
+---
+
+# Implicit size, explicit size, content size, padding, margin, inset...
+
+- **Implicit Size**: Space occupied when no explicit size or anchors are set.
+- **Explicit Size**: Space occupied when an external size is given, ie `width/height` or `anchors`
+  are set.
+- **Content Size**: Space occupied by the contents of a view.
+- **Padding**: Space between the content item and the edge of a component.
+- **Margin**: Space between two controls.
+- **Inset**: Space between background and the edge of a component.
+
+<!--
+It's very important to get this concept right. QtQuick Controls are built on these ideas, and not
+getting it right will cause headaches in the future. It's best to control the size of your items by
+manipulating these, or some base values.
+
+Content size determines if a view can be scrolled or not. Not that clear, took a long time for
+designers to understand.
+-->
+
+---
+
+<img src="/qtquickcontrols2-control.png" class="h-100 rounded shadow" style="text-align: center" />
+
+---
+layout: fact
+---
+
+Thank You
