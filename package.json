@@ -3,7 +3,7 @@
   "homepage": "https://furkanzmc.github.io/qtdevcon-community-driven-coding-guidelines/",
   "private": true,
   "scripts": {
-    "build": "slidev build",
+    "build": "slidev build --base /qtdevcon-community-driven-coding-guidelines/",
     "dev": "slidev --open",
     "export": "slidev export"
   },
