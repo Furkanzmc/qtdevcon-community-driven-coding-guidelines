@@ -1144,6 +1144,20 @@ designers to understand.
 <img src="/qtquickcontrols2-control.png" class="h-100 rounded shadow" style="text-align: center" />
 
 ---
+
+# What's next?
+
+- Clean up of the old
+- More content for Qt 6
+- An architecture section
+
+<!--
+Since this is supposed to be a live document, it'll get updated as we learn new things. What I want
+next is some more support from the community. I had reviews from some Qt developers but it needs to
+go beyond that.
+-->
+
+---
 layout: fact
 ---
 
