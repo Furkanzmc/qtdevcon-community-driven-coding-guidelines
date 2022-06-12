@@ -187,13 +187,12 @@ image: https://unsplash.com/photos/NL_DF0Klepc/download?ixid=MnwxMjA3fDB8MXxhbGx
 
 # How to Read QML Code
 
-```qml {all|1-1|2-3|5-7|7-9|10-12|13-19|20-23|all}
+```qml {all|1-1|1-3|1-6|1-8|1-11|1-17|all}
 // CircleMouseArea.qml
 Item {
     id: root
 
     property int radius
-    property color borderColor
 
     signal clicked(MouseEvent mouse)
 
@@ -204,8 +203,6 @@ Item {
         width: parent.width / 2
         height: height
         radius: root.radius
-        border.width: 1
-        border.color: root.borderColor
     }
 
     MouseArea {
