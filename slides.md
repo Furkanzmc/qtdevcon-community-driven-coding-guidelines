@@ -890,6 +890,21 @@ Signals != Functions
 <!--
 This was one of the most obvious mistakes we made. Signals are signals, functions are functions.
 They each have their own place. Don't confuse them.
+- Had to chase signals and signal handlers all over
+-->
+
+---
+
+# Functions vs Signals
+
+Function -> Changes Internal State
+> Imperative form -> doSomething()
+
+Signal -> Announces Internal State Change
+> Passive form -> somethingChanged()
+
+<!--
+Signals should be made private.
 -->
 
 ---
@@ -954,23 +969,9 @@ ApplicationWindow {
 ```
 
 <!--
-This is especially neferious in delegates. We have models that have millions and millions of
-objects inside. If these signals get duplicated somehow, or we run into similar issue here, then
-application can get stable and it may be hard to track.
--->
-
----
-
-# Functions vs Signals
-
-Function -> Changes Internal State
-> Imperative form -> doSomething()
-
-Signal -> Announces Internal State Change
-> Passive form -> somethingHappened()
-
-<!--
-Signals should be made private.
+- Nefarious in delegates
+- Model with millions of objects
+- Hard to track down
 -->
 
 ---
@@ -1004,12 +1005,38 @@ Window {
 ```
 
 <!--
-What is wrong with this code? These examples are trivial, but in a non-trivial application, the
-consequences of these might end up costing you.
-
-One problem we had in the beginning of our development was that signals were used as functions with
-many indirections. It made code very hard to follow and made it exceedingly dynamic.
+- Signal is being used as a function
+- We had this problem in the beginning
+- Makes code hard to follow and less re-usable
 -->
+
+---
+
+```qml
+// ColorPicker.qml
+Rectangle {
+    id: root
+
+    signal colorPicked(color pickedColor)
+
+    ColorDialog {
+        onColorChanged: {
+            root.color = color
+            root.colorPicked(color)
+        }
+    }
+}
+
+// main.qml
+Window {
+    ColorPicker {
+        onColorPicked: {
+            label.text = "Color Changed"
+        }
+    }
+    Label { id: label }
+}
+```
 
 ---
 layout: fact
@@ -1026,78 +1053,10 @@ meant primarily for developers.
 -->
 
 ---
-
-# Use arrow function syntax for signal handlers
-
-```qml
-MouseArea {
-    // Good!
-    onClicked: (mouse) => {
-
-    }
-    // Bad...
-    onClicked: {
-
-    }
-}
-```
-
----
-layout: image-right
-image: https://i.pinimg.com/originals/d9/eb/e2/d9ebe29636e1fac1e40b7a10da61bb7e.jpg
----
-
-> ... our intellectual powers are rather geared to master static relations and that our powers to
-> visualize processes evolving in time are relatively poorly developed. - Edsger W. Dijkstra, Go To
-> Statement Considered Harmful
-
-<!--
-Profound statement. Signals makes your application more dynamic and you have to jump from one place
-to the other. Bindings are usually a better alternative to using signals. If you have to declare
-signals, first ask yourself if there is a way you can express this as a property. With a property,
-the relationship will be established and will be easier for you to reason with. With signals,
-anybody could abuse it and use it elsewhere.
--->
-
----
 layout: section
 ---
 
-# JavaScript
-
----
-
-```javascript
-// Arrow function
-root.value = Qt.binding(() => root.someOtherValue)
-// The old way.
-root.value = Qt.binding(function() { return root.someOtherValue })
-
-// Variables
-const value = 32;
-let valueTwo = 42;
-{
-    // Valid assignment since we are in a different scope.
-    const value = 32;
-    let valueTwo = 42;
-}
-const value = 32;
-value = 42; // ERROR!
-```
-
-<!--
-Ideally, you should have as little JavaScript as possible. This is in part JS is slow for heavy
-operations, but mostly to reduce friction for the readers of your code base. For newcomers, QML is
-already new and now they have to learn JS... They probably heard nothing but bad news about JS so
-no need to force it on them. Prefer C++ objects as singletons or as global object to add functions,
-e.g Qt or Aw object.
--->
-
----
-layout: section
----
-
-# States and Transitions
+# [States and Transitions](https://github.com/Furkanzmc/QML-Coding-Guide#states-and-transitions)
 
 ---
 
@@ -1138,11 +1097,11 @@ QQmlListProperty does not reset but append to itself.
 layout: section
 ---
 
-# Visual Items
+# [Visual Items](https://github.com/Furkanzmc/QML-Coding-Guide#visual-items)
 
 ---
 
-# Implicit size, explicit size, content size, padding, margin, inset...
+# One Size Does Not Fit All
 
 - **Implicit Size**: Space occupied when no explicit size or anchors are set.
 - **Explicit Size**: Space occupied when an external size is given, ie `width/height` or `anchors`
@@ -1152,35 +1111,100 @@ layout: section
 - **Margin**: Space between two controls.
 - **Inset**: Space between background and the edge of a component.
 
-<!--
-It's very important to get this concept right. QtQuick Controls are built on these ideas, and not
-getting it right will cause headaches in the future. It's best to control the size of your items by
-manipulating these, or some base values.
+<img src="/qtquickcontrols2-control.png" class="h-65 rounded shadow" style="text-align: center" />
 
-Content size determines if a view can be scrolled or not. Not that clear, took a long time for
-designers to understand.
+<!--
+- Understand this!
+- QtQuick Controls use it
+- Not using it right will cause headaches
+- Gives you the freedom to provide more customization
+- Took a while for designers to understand
+-->
+
+---
+layout: image-right
+image: https://i.pinimg.com/originals/d9/eb/e2/d9ebe29636e1fac1e40b7a10da61bb7e.jpg
+---
+
+> ... our intellectual powers are rather geared to master **static relations** and that our powers
+> to visualize **processes evolving in time** are relatively poorly developed. - Edsger W.
+> Dijkstra, Go To Statement Considered Harmful
+
+<!--
+Profound statement. Signals makes your application more dynamic and you have to jump from one place
+to the other. Bindings are usually a better alternative to using signals. If you have to declare
+signals, first ask yourself if there is a way you can express this as a property. With a property,
+the relationship will be established and will be easier for you to reason with. With signals,
+anybody could abuse it and use it elsewhere.
+-->
+
+---
+layout: section
+---
+
+# [JavaScript](https://github.com/Furkanzmc/QML-Coding-Guide#javascript)
+
+<!--
+- Have as little JS as possible
+- We have our own way of exposing C++ functions, would love to do a talk about that
+- One less thing to learn
+- Prefer C++ for logic
 -->
 
 ---
 
-<img src="/qtquickcontrols2-control.png" class="h-100 rounded shadow" style="text-align: center" />
+```javascript
+// Arrow function
+root.value = Qt.binding(() => root.someOtherValue)
+// The old way.
+root.value = Qt.binding(function() { return root.someOtherValue })
+
+// Variables
+const value = 32;
+let valueTwo = 42;
+{
+    // Valid assignment since we are in a different scope.
+    const value = 32;
+    let valueTwo = 42;
+}
+const value = 32;
+value = 42; // ERROR!
+```
+
+---
+
+# Use arrow function syntax for signal handlers
+
+```qml
+MouseArea {
+    // Good!
+    onClicked: (mouse) => {
+
+    }
+    // Bad...
+    onClicked: {
+
+    }
+}
+```
 
 ---
 
 # What's next?
 
-- Clean up of the old
+- OUt with the old, in with the new
 - More content for Qt 6
 - An architecture section
+- More contributions from others
 
 <!--
-Since this is supposed to be a live document, it'll get updated as we learn new things. What I want
-next is some more support from the community. I had reviews from some Qt developers but it needs to
-go beyond that.
+- Live document
+- More support from community
+- Had reviews from Mitch Curtis and a few other Qt developers
 -->
 
 ---
 layout: fact
 ---
 
-Thank You
+# Thank You
