@@ -27,14 +27,8 @@ background: https://unsplash.com/photos/cAtzHUz7Z8g/download?ixid=MnwxMjA3fDB8MX
 # Community Driven Coding Guidelines for QML
 
 <!--
-- Wrote the desktop client for EdBox.
-- Started using QML on mobile and desktop for a startup.
-- Alone developer.
-- Started writing down the things I learned.
-- Turned into its current state.
-- Now working at Autodesk at a massive project to rewrite the UI of one of our products completely
-  in QML. Working with designers.
-- Updated as we go along.
+- Welcome to the talk, thanks for joining.
+- It's good to be here.
 -->
 
 ---
@@ -51,9 +45,15 @@ background: https://unsplash.com/photos/cAtzHUz7Z8g/download?ixid=MnwxMjA3fDB8MX
 
 <!--
 - Worked on mobile and desktop applications with QML
+- Started using QML on mobile and desktop for a startup.
+- Wrote the desktop client for EdBox.
 - I build my own keyboards
 - I love UI work and working with designers
+- Alone developer.
+- Now working at Autodesk at a massive project to rewrite the UI of one of our products completely
+  in QML. Working with designers.
 - Please interrupt and ask questions
+- Can't share Alias because it's not out yet.
 -->
 
 ---
@@ -81,27 +81,40 @@ image: https://unsplash.com/photos/ioYwosPYC0U/download?force=true&w=640
 
 # Why have guidelines?
 
-- Different use cases for QML in vastly different industries
-- Sane defaults for new comers to the language[^1]
-- Great existing content but scattered and unstructured[^2]
+- Pool experience from vastly different industries
+- Sane defaults for new comers to the language
 - Base for tooling
 
-[^1]: [Official Best Practices for QML and Qt Quick from Qt](https://doc.qt.io/qt-6/qtquick-bestpractices.html)
-[^2]: [QML Best Practices Search](https://www.google.com/search?hl=en&q=qml+best+practices)
-
 <!--
-- Started out with me writing down what I learn and solutions to my mistakes.
 - No need to convince anyone of this.
-- Qt's documentation already has great content.
-- QML has very many different use cases in different industries. No known source of good community
-  knowledge repository.
-- Knowledge gathered from varies disciplines can help others.
-- If you search for QML best practices, you'll come across many great talks and some blog posts.
-  But they are scattered, information is duplicated.
+- Poll: How many C++, HTML developers?
+- Unique situation for QML: New language, different paradigm.
+- Desktop has very different limitations than embedded or mobile platforms.
+- Right by default
 -->
 
 ---
-layout: center
+
+# Yet another guideline?..
+
+![standards](https://imgs.xkcd.com/comics/standards.png)
+
+> - [Official Best Practices for QML and Qt Quick from Qt](https://doc.qt.io/qt-6/qtquick-bestpractices.html)
+> - [QML Best Practices Search](https://www.google.com/search?hl=en&q=qml+best+practices)
+
+<!--
+- Qt's documentation already has great content.
+- Content from Nokia, Qt, and others...
+- Scattered.
+- Unique to QML: Embedded, web, desktop, mobile...
+- Make it a more open conversation.
+- Barrier to Qt is higher than GitHub.
+- Started out with me writing down what I learn and solutions to my mistakes.
+- First commit on April 30th, 2018
+- Many different use cases, no common open source truth.
+- Knowledge gathered from varies disciplines can help others.
+-->
+
 ---
 
 # Guidelines are NOT...
@@ -111,9 +124,9 @@ layout: center
 - Be all end all
 
 <!--
-- Guidelines change as new experience is gained.
-- Whenever it makes sense, you can bypass them.
-- No need to wage war with your colleagues over it. Discuss and adjust.
+- Change as you learn.
+- Ignore when makes sense.
+- No war. Discuss and adjust.
 -->
 
 ---
@@ -128,7 +141,7 @@ layout: center
 - Making it easier to extract conventions for new comers.
 
 <!--
-It's all about making things easier for people to read, write and understand code.
+- Make things easy, not hard.
 -->
 
 ---
@@ -166,11 +179,16 @@ image: https://unsplash.com/photos/NL_DF0Klepc/download?ixid=MnwxMjA3fDB8MXxhbGx
 - [QML: Tooling](https://bugreports.qt.io/browse/QTBUG-101531?jql=project%20%3D%20QTBUG%20AND%20component%20%3D%20%22QML%3A%20Tooling%22)
 - [QTBUG-69097](https://bugreports.qt.io/browse/QTBUG-69097)
 
+<!--
+- Strong typing helps as well
+-->
+
 ---
 
 # How to Read QML Code
 
-```qml {all|1-2|4-6|6-7|8-10|11-18|20-22|all}
+```qml {all|1-1|2-3|5-7|7-9|10-12|13-19|20-23|all}
+// CircleMouseArea.qml
 Item {
     id: root
 
@@ -197,21 +215,13 @@ Item {
 ```
 
 <!--
-The goal is to gather as much background information as possible before you jump into the
-implementation details of a component.
-
-When you see the top level type, you already gain some insight. You know what kind of properties
-and signals that the type has if it's a built-in type. If it's not, then you just need to jump to
-the file, take a quick glance at the top and understand the basics of it.
-
-Then we get to the part that customizes this component further with additional properties and
-signals. Now I have a better understanding of the interactions that this component has.
-
-Then comes the visual children that might depend on the properties we declared above or the
-inherited properties.
-
-This helps us especially when we have designers working on the codebase. It makes it easier for
-them to read and understand code.
+- Gather information before you move down
+- Interface first
+- Easy to glace over
+- Signals and properties show customization points and interactions
+- Often, you are not interested in implementation details
+- Makes it easier for designers.
+- Reduce the barrier of entry
 -->
 
 ---
@@ -240,14 +250,10 @@ layout: section
 - JavaScript functions
 
 <!--
-- Each title will have a link to the associated section on GitHub.
-
-QML is a visual language. When you look at a code, it should be easy to imagine what it would look
-like at runtime. This is not for replacing hot reloading, but making editing and understanding
-easier.
-
-Discuss in your team, decide on a style and stick to it. We stuck to this, qmlformat does something
-completely different.
+- QML is a visual language
+- Should be easy to imagine the code
+- Discuss with your team and adjust
+- qmlformat doesn't support customization yet
 -->
 
 ---
@@ -281,6 +287,7 @@ MouseArea {
     id: root
 
     property point pressedPosition
+
     signal tripleClicked()
 
     pressAndHoldInterval: 20
@@ -292,10 +299,9 @@ MouseArea {
 ```
 
 <!--
-When you look at the code, it should be easy to get a big picture idea of the properties and
-signals this document provides so the code you read down below makes more sense.
-
-Mitchell mentioned that Component is also an attached property so we should change this as well.
+- Glance and understand the basics, big picture
+- As you read down, things make more and more sense
+- Mitchell mentioned that Component is also an attached property so we should change this as well
 -->
 
 ---
@@ -337,10 +343,8 @@ Item {
 ```
 
 <!--
-Note that we wouldn't be setting anchors and explicit size and position here if this is meant to be
-a component.
-Geometry information is often the thing that we change the most and it affects our understanding of
-the component.
+- Position and geometry first
+- Prioritize most essential properties of component
 -->
 
 ---
@@ -374,11 +378,8 @@ Item {
 ```
 
 <!--
-The reason that functions are at the bottom is first you should not be adding functions to your
-components, and second in case the functions end up getting larger they hurt readability.
-
-In our code base, we have a way of creating function objects that call our C++ functions. We rarely
-add JS functions.
+- Don't put functions in your interface
+- Large functions hurt readibility
 -->
 
 ---
@@ -391,7 +392,6 @@ layout: two-cols
 RowLayout {
 
     Item {
-        id: root
         states: [ State { } ]
         transitions: [ Transitions { } ]
         width: 300
@@ -410,7 +410,6 @@ RowLayout {
 RowLayout {
 
     Item {
-        id: root
         width: 300
         enabled: true
         layer.enabled: false
@@ -422,10 +421,8 @@ RowLayout {
 ```
 
 <!--
-Easier to see what you are transitioning when the states are above the transitions.
-Easier to see what properties will be changing in the states if we can see the properties above.
-As you read the code going down, you are already familiar with the properties that the states would
-be editing. Makes it easier to reason with code.
+- Eaiser to see what you are changing
+- You read top to bottom, more familiarity
 -->
 
 ---
@@ -528,10 +525,9 @@ Item {
 ```
 
 <!--
-It takes a while for people to get used to it, but it pays in the long run. We are at a stage where
-our designers have gotten so used to reading code in a structured way, when the code doesn't follow
-the guidelines they actually have trouble understanding the code. Declarative programming is fairly
-new to our team and it takes a while for people to ramp up.
+- Takes a while to get used to, but pays off
+- Our designers can't understand code otherwise
+- Structured > Unstructured
 -->
 
 ---
@@ -578,6 +574,11 @@ ListView {
 }
 ```
 
+<!--
+- Simple example to fit the slide
+- What are the downsides?
+-->
+
 ---
 
 # Declarative 2
@@ -608,7 +609,7 @@ QML is a declarative language, use it as such.
 layout: two-cols
 ---
 
-# Avoid Unnecessary Binding Evaluations
+# Unnecessary Evaluations
 
 ```qml
 import QtQuick 2.3
@@ -634,7 +635,7 @@ Item {
 
 ::right::
 
-# Avoid Unnecessary Binding Evaluations
+# -
 
 ```qml
 import QtQuick 2.3
@@ -662,24 +663,28 @@ Item {
 ```
 
 <!--
-This also applies to emitting signals. Signals should be emitted when there is an actual change.
-We have had cases where we emit signals willy nilly and it resulted in performance problems and
-binding loops. Menu is a prime example. Or a `modified()` method call.
+- Same applies to emitting signals
+- Emit signals when something actually changes
+- We have had cases where we emit signals willy nilly and it resulted in performance problems and
+  binding loops.
 -->
 
 ---
 layout: section
 ---
 
-# C++ Integration
+# [C++ Integration](https://github.com/Furkanzmc/QML-Coding-Guide#c-integration)
 
 <!--
-Ask the audience: How many different ways do you think we can expose a C++ object to QML?
-1- Context properties [Deprecated]
-2- Global object
-3- Singletons
-4- Instantiated object
+Poll: How many different ways do you think we can expose a C++ object to QML?
 -->
+
+---
+
+1. Context properties [Deprecated]
+2. Global object
+3. Singletons
+4. Instantiated object
 
 ---
 
@@ -688,6 +693,23 @@ Ask the audience: How many different ways do you think we can expose a C++ objec
 Don't use them.
 
 [QTBUG-73064](https://bugreports.qt.io/browse/QTBUG-73064)
+
+```qml
+Item {
+    id: root
+
+    property int borderWidth
+
+    Rectangle {
+        // No no...
+        border.width: borderWidth
+    }
+}
+```
+
+<!--
+- This also applies to non-qualified access
+-->
 
 ---
 
@@ -708,9 +730,9 @@ Window {
 ```
 
 <!---
-If you can't fit these functionality into an instantiated class, then singletons are a good place
-to put together some common functions. Normally, I would prefer instantiated types for data, but
-for themes singletons are good.
+- Common API access like screen or other input functions
+- One exception is for themes
+- I find singleton data classes hard to deal with
 -->
 
 ---
@@ -746,12 +768,9 @@ Item {
 ```
 
 <!--
-The more you reduce the dependency that a component has, the better. It makes your components more
-flexible and easy to use.
-
-Reasoning with global data is hard. When it's declared locally, it's less cognitive load on the
-reader. We have awQuick::Document, and it ends up being a bloated class with lots of members. Hard
-to understand, reason with. But we only ever access this in a single place.
+- Reduce component dependency
+- Promotes flexible and easy to use components
+- Reasoning with global data is hard
 -->
 
 ---
@@ -779,7 +798,9 @@ Window {
 ```
 
 <!--
-The goal is to increase flexibility and re-usability.
+- Increase flexibility and re-usability.
+- Locally declared, created, destroyed
+- Use singleton in C++, but expose it as an instantiated type
 -->
 
 ---
@@ -810,9 +831,8 @@ Window {
 ```
 
 <!--
-The reason I like this approach is it allows for maximum reusablity of this component. I can use
-PaletteColorsModel as a customization point internally by exposing properties. I can easily change
-data based on the type of colors I want to show.
+- Better re-usability
+- Customization point, with singleton everything changes
 -->
 
 ---
@@ -823,6 +843,12 @@ Two ownership types:
 
 - C++
 - QML
+- Expose data with properties only
+> See [example](https://zmc.space/freeze-columns-with-qml-table-view.html) for using properties for
+> data customization
+
+> See [this article](https://embeddeduse.com/2018/04/02/qml-engine-deletes-c-objects-still-in-use/)
+> for a real life example of a related bug in an application.
 
 ```cpp
 Q_PROPERTY( QObject* colors READ colors )
@@ -831,39 +857,35 @@ QObject* colors(); // Ownership remains in C++.
 Q_INVOKABLE QObject* myData(); // Ownership is transferred to QML.
 ```
 
-See [this article](https://embeddeduse.com/2018/04/02/qml-engine-deletes-c-objects-still-in-use/)
-for a real life example of a related bug in an application.
-
 <!--
-Honestly, if you worry about this then you may be doing something wrong. Keep things simple when it
-comes to memory management, and the best way to do that is to just stick to instantiated types and
-avoid calling any `get` functions from the QML side.
-
-awQuick::Menu is also another example for this. We were returning QObjects from methods, and it
-resulted in one of our editors crashing and it was hard to track down. So, do yourself a favor and
-don't call methods in QML. Rely on signals or property change signals.
+- Shouldn't need to worry about this
+- Always expose data with properties, not functions
+- Data exposure with functions promotes imperative style
+- Add more functions to slice data declaratively
 -->
 
 ---
 layout: section
 ---
 
-# Memory
+# [Memory](https://github.com/Furkanzmc/QML-Coding-Guide#performance-and-memory)
 
 Profile first!
 Needs contributions.
 
 <!--
-Not in a memory constrained environment. So not a problem for us.
-I had one section about implicit types in the guideline but it is not that practical and will
-likely be removed. If you are working on a memory constrained environment, do contribute!
+- Not in a memory constrained environment.
+- Existing ones will be removed
+- If you are working on a memory constrained environment, do contribute!
 -->
 
 ---
 layout: section
 ---
 
-# Signals
+# [Signals](https://github.com/Furkanzmc/QML-Coding-Guide#signal-handling)
+
+Signals != Functions
 
 <!--
 This was one of the most obvious mistakes we made. Signals are signals, functions are functions.
