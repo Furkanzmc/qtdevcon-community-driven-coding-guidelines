@@ -1120,6 +1120,123 @@ layout: section
 -->
 
 ---
+layout: two-cols
+---
+
+```qml
+// CheckBox.qml
+Item {
+    id: root
+
+    property bool checked
+    property string text
+
+    Rectangle {
+        id: indicator
+        width: 50
+        height: 50
+        visible: root.checked
+        color: "red"
+    }
+
+    Label {
+        anchors {
+            left: indicator.right
+            verticalCenter: indicator.verticalCenter
+        }
+        text: root.text
+    }
+}
+```
+
+::right::
+
+```qml
+// main.qml
+Window {
+    CheckBox {
+        checked: true
+        text: "CheckBox"
+    }
+
+    Column {
+        width: 100
+
+        Repeater {
+            model: 5
+            delegate: CheckBox {
+                required property int index
+
+                width: parent.width
+                checked: index % 2 === 0
+            }
+        }
+    }
+}
+```
+
+---
+layout: two-cols
+---
+
+```qml
+// CheckBox.qml
+Item {
+    id: root
+
+    property bool checked
+    property string text
+
+    implicitWidth: indicator.implicitWidth + label.implicitWidth
+    implicitHeight: Math.max(indicator.implicitHeight, label.implicitHeight)
+
+    Rectangle {
+        id: indicator
+        width: height
+        height: parent.height * 0.5
+        implicitWidth: 50
+        implicitHeight: 50
+        visible: root.checked
+        color: "red"
+    }
+
+    Label {
+        id: label
+        anchors {
+            left: indicator.right
+            verticalCenter: indicator.verticalCenter
+        }
+        text: root.text
+    }
+}
+```
+
+::right::
+
+```qml
+// main.qml
+Window {
+    CheckBox {
+        checked: true
+        text: "CheckBox"
+    }
+
+    Column {
+        width: 100
+
+        Repeater {
+            model: 5
+            delegate: CheckBox {
+                required property int index
+
+                checked: index % 2 === 0
+            }
+        }
+    }
+}
+```
+
+---
 layout: image-right
 image: https://i.pinimg.com/originals/d9/eb/e2/d9ebe29636e1fac1e40b7a10da61bb7e.jpg
 ---
