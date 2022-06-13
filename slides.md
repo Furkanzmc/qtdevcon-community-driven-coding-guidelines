@@ -44,34 +44,13 @@ background: https://unsplash.com/photos/cAtzHUz7Z8g/download?ixid=MnwxMjA3fDB8MX
 - Website: https://zmc.space
 
 <!--
-- Worked on mobile and desktop applications with QML
-- Started using QML on mobile and desktop for a startup.
-- Wrote the desktop client for EdBox.
+- Started 2017, mobile, desktop
 - I build my own keyboards
+- Now working at Autodesk with awesome designers and developers
 - I love UI work and working with designers
-- Now working at Autodesk at a massive project to rewrite the UI of one of our products completely
-  in QML. Working with designers.
 - Please interrupt and ask questions
 - Can't share Alias because it's not out yet.
 -->
-
----
-
-<img src="/cuz.png" class="m-0 h-100 rounded shadow" style="float: left" />
-
-<img src="/kursbudur.png" class="m-0 h-100 rounded shadow" style="float: right" />
-
----
-
-<img src="/mantar.png" class="m-0 h-100 rounded shadow" style="float: left; margin-left: 5em" />
-
-<img src="/ekinoks.gif" class="m-0 h-100 rounded shadow" style="float: right; margin-right: 6em" />
-
----
-
-<img src="/edbox_1.png" class="m-0 h-100 rounded shadow" style="float: left" />
-
-<img src="/edbox_2.png" class="m-0 h-100 rounded shadow" style="float: right" />
 
 ---
 layout: image-left
@@ -85,11 +64,9 @@ image: https://unsplash.com/photos/ioYwosPYC0U/download?force=true&w=640
 - Base for tooling
 
 <!--
-- No need to convince anyone of this.
-- Poll: How many C++, HTML developers?
+- Go over slide first
+- Poll: How many QML devs, how many started out as C++, how many as HTML developers?
 - Unique situation for QML: New language, different paradigm.
-- Desktop has very different limitations than embedded or mobile platforms.
-- Right by default
 -->
 
 ---
@@ -102,16 +79,10 @@ image: https://unsplash.com/photos/ioYwosPYC0U/download?force=true&w=640
 > - [QML Best Practices Search](https://www.google.com/search?hl=en&q=qml+best+practices)
 
 <!--
-- Qt's documentation already has great content.
-- Content from Nokia, Qt, and others...
-- Scattered.
-- Unique to QML: Embedded, web, desktop, mobile...
-- Make it a more open conversation.
-- Barrier to Qt is higher than GitHub.
+- Struggle with the paradigm shift
 - Started out with me writing down what I learn and solutions to my mistakes.
-- First commit on April 30th, 2018
-- Many different use cases, no common open source truth.
-- Knowledge gathered from varies disciplines can help others.
+- Good Qt et al documentation, lone line videos, but scattered
+- Make it a more open conversation.
 -->
 
 ---
@@ -137,49 +108,11 @@ image: https://unsplash.com/photos/ioYwosPYC0U/download?force=true&w=640
     + understand
     + maintain
 - Making it easier to detect errors or pitfalls
-- Making it easier to extract conventions for new comers.
+- Low barrier knowledge for new comers
+- Aid in tooling
 
 <!--
-- Make things easy, not hard.
--->
-
----
-layout: image-right
-image: https://unsplash.com/photos/NL_DF0Klepc/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjU0NDYyNzI0&force=true&w=1080
----
-
-# Better Tooling
-
-- Better diagnostics
-- Early error detection
-- Enforcing best practices and deprecation warnings
-- Better integration into development cycle (e.g git hooks, CI)
-- Customization
-
-<!--
-- Qt Creator provides good interface to some of the tools. But it forces one to use Qt Creator.
-  Most of our developers don't.
-- It's not immediately clear for people, especially beginners, where the error is and why it's
-  there.
-- Written guidelines are great, but it's not viable to expect a developer to check the guidelines
-  every time.
-- We adopted a coding style for QML that's incompatible with qmlformat, it's not feasible for us to
-  change now.
--->
-
----
-
-# Related Work
-
-- [QTBUG-68406](https://bugreports.qt.io/browse/QTBUG-68406): Create Language Server for QML
-- [QTBUG-74839](https://bugreports.qt.io/browse/QTBUG-74839): Implement QML code model in Qt
-- [QTBUG-74840](https://bugreports.qt.io/browse/QTBUG-74840): Implement QmlDom in Qt
-- [QTBUG-73675](https://bugreports.qt.io/browse/QTBUG-73675): Streamline QML for better toolability and performance
-- [QML: Tooling](https://bugreports.qt.io/browse/QTBUG-101531?jql=project%20%3D%20QTBUG%20AND%20component%20%3D%20%22QML%3A%20Tooling%22)
-- [QTBUG-69097](https://bugreports.qt.io/browse/QTBUG-69097)
-
-<!--
-- Strong typing helps as well
+- What guidelines are is more important than what they aren't.
 -->
 
 ---
@@ -246,10 +179,8 @@ layout: section
 - JavaScript functions
 
 <!--
-- QML is a visual language
 - Should be easy to imagine the code
 - Discuss with your team and adjust
-- qmlformat doesn't support customization yet
 -->
 
 ---
@@ -297,7 +228,6 @@ MouseArea {
 <!--
 - Glance and understand the basics, big picture
 - As you read down, things make more and more sense
-- Mitchell mentioned that Component is also an attached property so we should change this as well
 -->
 
 ---
@@ -315,7 +245,7 @@ Item {
         y: 32
         implicitWidth: 300
         width: 300
-        id: root
+        id: myItem
     }
 }
 ```
@@ -327,7 +257,7 @@ Item {
 ```qml
 Item {
     Item {
-        id: root
+        id: myItem
         x: 23
         y: 32
         z: 32
@@ -341,6 +271,7 @@ Item {
 <!--
 - Position and geometry first
 - Prioritize most essential properties of component
+- Interface comes first
 -->
 
 ---
@@ -571,7 +502,6 @@ ListView {
 ```
 
 <!--
-- Simple example to fit the slide
 - What are the downsides?
 - Eyes should go left to right, not top to bottom
 -->
@@ -662,6 +592,19 @@ Item {
 <!--
 - Same applies to emitting signals
 - Emit signals when something actually changes
+-->
+
+---
+
+```cpp
+void MyRectangle::setRadius(int r)
+{
+    m_radius = r;
+    emit radiusChanged();
+}
+```
+
+<!--
 - We have had cases where we emit signals willy nilly and it resulted in performance problems and
   binding loops.
 -->
