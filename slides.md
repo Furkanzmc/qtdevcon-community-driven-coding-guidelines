@@ -1194,6 +1194,8 @@ MouseArea {
 - An architecture section
 - More contributions from others
 
+> QML Coding Guidelines on GitHub - [https://github.com/Furkanzmc/QML-Coding-Guide](https://github.com/Furkanzmc/QML-Coding-Guide)
+
 <!--
 - Live document
 - More support from community
