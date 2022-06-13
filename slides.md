@@ -574,6 +574,7 @@ ListView {
 <!--
 - Simple example to fit the slide
 - What are the downsides?
+- Eyes should go left to right, not top to bottom
 -->
 
 ---
