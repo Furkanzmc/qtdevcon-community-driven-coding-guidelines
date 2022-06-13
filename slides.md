@@ -49,7 +49,6 @@ background: https://unsplash.com/photos/cAtzHUz7Z8g/download?ixid=MnwxMjA3fDB8MX
 - Wrote the desktop client for EdBox.
 - I build my own keyboards
 - I love UI work and working with designers
-- Alone developer.
 - Now working at Autodesk at a massive project to rewrite the UI of one of our products completely
   in QML. Working with designers.
 - Please interrupt and ask questions
