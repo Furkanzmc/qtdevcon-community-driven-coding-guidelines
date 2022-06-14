@@ -66,6 +66,7 @@ image: https://unsplash.com/photos/ioYwosPYC0U/download?force=true&w=640
 <!--
 - Go over slide first
 - Poll: How many QML devs, how many started out as C++, how many as HTML developers?
+- Poll: How many embeded, desktop, web?
 - Unique situation for QML: New language, different paradigm.
 -->
 
