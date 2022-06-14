@@ -475,11 +475,19 @@ layout: two-cols
 ListView {
     model: ContactModel { }
     delegate: Label {
+        id: dlg
+
         required property int index
         required property string name
 
+        // Or onIndexChanged? onNameChanged?
         Component.onCompleted: {
             text = index + ". " + name
+            rect.visible = dlg.index % 2
+        }
+
+        Rectangle {
+            id: rect
         }
     }
 }
@@ -493,10 +501,16 @@ ListView {
 ListView {
     model: ContactModel { }
     delegate: Label {
+        id: dlg
+
         required property int index
         required property string name
 
         text: index + ". " + name
+
+        Rectangle {
+            visible: dlg.index % 2
+        }
     }
 }
 ```
@@ -1188,11 +1202,9 @@ image: https://i.pinimg.com/originals/d9/eb/e2/d9ebe29636e1fac1e40b7a10da61bb7e.
 > Dijkstra, Go To Statement Considered Harmful
 
 <!--
-Profound statement. Signals makes your application more dynamic and you have to jump from one place
-to the other. Bindings are usually a better alternative to using signals. If you have to declare
-signals, first ask yourself if there is a way you can express this as a property. With a property,
-the relationship will be established and will be easier for you to reason with. With signals,
-anybody could abuse it and use it elsewhere.
+- Signals make it more dynmaic
+- Properties over signals
+- Properties establish relationships easily
 -->
 
 ---
