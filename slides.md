@@ -81,6 +81,7 @@ image: https://unsplash.com/photos/ioYwosPYC0U/download?force=true&w=640
 
 <!--
 - Struggle with the paradigm shift
+- Paradigm shift, Engelbart, mother of all demos, Xerox.
 - Started out with me writing down what I learn and solutions to my mistakes.
 - Good Qt et al documentation, lone line videos, but scattered
 - Make it a more open conversation.
